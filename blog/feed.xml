@@ -5,13 +5,13 @@
 	<link>https://acid.vegas/blog/</link>
 	<description>write-ups on internet anomalies, DNS research, threat intelligence, and hacking</description>
 	<language>en-us</language>
-	<lastBuildDate>Mon, 02 Mar 2026 00:00:00 +0000</lastBuildDate>
+	<lastBuildDate>Tue, 03 Mar 2026 00:00:00 +0000</lastBuildDate>
 	<atom:link href="https://acid.vegas/blog/feed.xml" rel="self" type="application/rss+xml"/>
 	<item>
 		<title>The Shady World of IP Leasing</title>
 		<link>https://acid.vegas/blog/the-shady-world-of-ip-leasing/</link>
 		<guid>https://acid.vegas/blog/the-shady-world-of-ip-leasing/</guid>
-		<pubDate>Mon, 02 Mar 2026 00:00:00 +0000</pubDate>
+		<pubDate>Tue, 03 Mar 2026 00:00:00 +0000</pubDate>
 		<description>The IPv4 "exhaustion" is not real. The addresses got hoarded and the market devolved into a wild sub-leasing economy where anyone can choose where their IPs appear from, who owns them on paper, and scrub them clean of any history.</description>
 		<category>vpn</category>
 		<category>proxy</category>
