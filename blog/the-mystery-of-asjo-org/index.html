@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="46 million DNS ANY queries for a Danish man's personal domain, from DoD address space, residential ISPs, and cloud providers across 12 countries. A two-year mystery nobody can explain.">
+<meta name="author" content="acidvegas">
+<meta name="keywords" content="dns, spoofing, ddos, scanning, honeypot, threat intelligence, asjo.org, dns amplification, department of defense">
+<meta property="og:title" content="The Mystery of ASJO.ORG">
+<meta property="og:description" content="46 million DNS ANY queries for a Danish man's personal domain, from DoD address space, residential ISPs, and cloud providers across 12 countries.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://acid.vegas/blog/the-mystery-of-asjo-org/">
+<meta property="article:published_time" content="2026-03-01">
+<meta property="article:tag" content="dns">
+<meta property="article:tag" content="spoofing">
+<meta property="article:tag" content="ddos">
+<meta property="article:tag" content="scanning">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Mystery of ASJO.ORG">
+<meta name="twitter:description" content="46 million DNS ANY queries for a Danish man's personal domain, from DoD address space, residential ISPs, and cloud providers across 12 countries.">
+<meta property="og:image" content="https://acid.vegas/blog/the-mystery-of-asjo-org/header.png">
+<meta name="twitter:image" content="https://acid.vegas/blog/the-mystery-of-asjo-org/header.png">
+<link rel="alternate" type="application/rss+xml" title="acidvegas blog" href="/blog/feed.xml">
+<title>acidvegas x blog - the mystery of asjo.org</title>
+<style>
+	h1{color:#8dc;font-size:1.4em;margin-top:2em;padding:0 15px;}
+	h2{color:#8dc;font-size:1.1em;margin-top:1.8em;padding:0 15px;}
+	p,li{line-height:1.7;max-width:800px;margin-left:auto;margin-right:auto;text-align:left;padding-left:15px;padding-right:15px;box-sizing:border-box;}
+	ul,ol{max-width:800px;margin-left:auto;margin-right:auto;text-align:left;padding-right:15px;}
+	pre{background-color:#0a0a0a;border:1px solid #333;padding:12px;overflow-x:auto;max-width:800px;margin:1em auto;text-align:left;font-size:0.85em;line-height:1.5;box-sizing:border-box;}
+	code{color:#8dc;}
+	img.screenshot{max-width:800px;width:100%;margin:1em auto;display:block;border:1px solid #333;box-sizing:border-box;}
+	img.blog-screenshot{max-width:600px;width:100%;margin:1em auto;display:block;border:1px solid #333;box-sizing:border-box;}
+	.date{color:#666;font-size:0.9em;}
+	.separator{color:#333;margin:2em 0;}
+	blockquote{border-left:2px solid #8dc;padding-left:12px;padding-right:15px;color:#aaa;max-width:780px;margin:1em auto;text-align:left;font-style:italic;box-sizing:border-box;}
+	.table-wrap{overflow-x:auto;max-width:100%;margin:1em auto;-webkit-overflow-scrolling:touch;}
+	table.ips{border-collapse:collapse;font-size:0.8em;max-width:800px;margin:0 auto;text-align:left;width:100%;}
+	table.ips th{color:#8dc;text-align:left;padding:4px 10px;border-bottom:1px solid #333;white-space:nowrap;}
+	table.ips td{padding:4px 10px;border-bottom:1px solid #1a1a1a;white-space:nowrap;}
+	.email{background-color:#0a0a0a;border:1px solid #333;padding:16px 20px;max-width:760px;margin:1em auto;text-align:left;font-size:0.9em;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;box-sizing:border-box;}
+	.email .sig{color:#666;}
+	.tags{max-width:800px;margin:1.5em auto;text-align:left;padding:0 15px;box-sizing:border-box;}
+	.tags a{display:inline-block;background:#1a1a1a;border:1px solid #333;padding:3px 10px;margin:3px 4px 3px 0;font-size:0.85em;text-decoration:none;color:#8dc;}
+	.tags a:hover{border-color:#8dc;}
+	@media(max-width:600px){
+		h1{font-size:1.2em;padding:0 10px;}
+		h2{font-size:1em;padding:0 10px;}
+		p,li{padding-left:10px;padding-right:10px;font-size:0.9em;}
+		ul,ol{padding-right:10px;}
+		pre{font-size:0.75em;padding:8px;margin:1em 5px;}
+		blockquote{margin:1em 10px;padding-right:10px;}
+		table.ips{font-size:0.7em;}
+		table.ips th,table.ips td{padding:3px 6px;}
+		.email{padding:12px;font-size:0.8em;margin:1em 5px;}
+		.tags{padding:0 10px;}
+		img.screenshot,img.blog-screenshot{margin:0.5em 0;}
+	}
+</style>
+<center>
+<br><a href="/"><img src="../../i/acidvegas.png" alt="acidvegas"></a>
+<br><img src="../../i/mostdangerous.png">
+<br><a href="../../hardcore.wav"><img src="../../i/crowdkill.gif"></a>
+<table>
+	<tr>
+		<td><img src="../../i/x.png"></td>
+		<td><a href="/blog/"><img src="../../i/blog.png"></a></td>
+		<td><img src="../../i/x.png"></td>
+	</tr>
+</table>
+
+<h1>The Mystery of ASJO.ORG</h1>
+<span class="date">2026-03-01</span>
+<p style="color:#888;font-size:0.9em;max-width:700px;margin:0.5em auto;line-height:1.5;padding:0 15px;box-sizing:border-box;">46 million DNS ANY queries for a Danish man's personal domain, from DoD address space, residential ISPs, and cloud providers across 12 countries. A two-year mystery nobody can explain.</p>
+
+<p>I have an obsession with internet anomalies. Weird traffic patterns, unexplained phenomena in protocol-level data, the kind of stuff that makes you open 40 browser tabs at 2 AM. I run a DNS honeypot cluster &mdash; multiple geographically distributed nameservers designed to study internet background noise, scanner behavior, and threat intelligence. Every query that hits these servers is logged &mdash; source IP, ASN, query name, record type, protocol, flags, all of it.</p>
+
+<img class="screenshot" src="header.png" alt="DNS honeypot cluster map showing global query sources hitting nameservers">
+
+<p>These servers have never been advertised publicly. No zone files reference them. No domain points to them. They exist solely to observe what the internet sends to an open resolver when nobody knows it's there.</p>
+
+<p>I was bored one day and started digging through the honeypot logs. What I found sent me down a rabbit hole that I figured, when all was said and done, was worth writing up.</p>
+
+<h2>The Expected Noise</h2>
+
+<p>Within 24 hours of spinning up the cluster, traffic began arriving. This was expected. People scan the entire IPv4 address space (<code>0.0.0.0/0</code>) for port 53 constantly. Botnets probe for open resolvers. Researchers enumerate. Scanners scan. This is the background radiation of the internet and exactly what the honeypot was built to capture.</p>
+
+<p>Then something caught my eye. Here are the top 5 queried domains on my honeypot over a 24-hour period:</p>
+
+<pre>Top Queries (24h)
+─────────────────────────────────────────────
+1  asjo.org                          462,894
+2  pizzaseo.com                        3,615
+3  subscribe.insight.synology.com      1,266
+4  stingbox.twocyber.com               1,096
+5  checkipv6.quickconnect.to           1,047</pre>
+
+<p>Read that again. The #1 domain has <b>128x more queries</b> than #2. It's not even close. Everything else on the list is explainable &mdash; Synology NAS devices phoning home, security research probes, SEO garbage. And then there's <code>asjo.org</code>, towering above everything else by two orders of magnitude. I brushed it off as "LOL DDOS, MY HONEYPOT IS WORKING!" and simply dropped the IP address using iptables.</p>
+
+<h2>46 Million Queries</h2>
+
+<p>I woke up one morning to find <b>46 million DNS queries</b> logged against my nameservers. All of them identical:</p>
+
+<pre>Query: asjo.org
+Type:  ANY
+Class: IN
+Proto: UDP</pre>
+
+<p>Every single one &mdash; a DNS <code>ANY</code> request for <code>asjo.org</code>. The source was a DigitalOcean IP address. My first thought was obvious: this is a <a href="https://www.cloudflare.com/learning/ddos/dns-amplification-ddos-attack/">DNS amplification attack</a>. Someone was using my open resolver to reflect amplified responses at a victim. Classic DDoS playbook. I dropped the IP with <code>iptables</code> and went about my day.</p>
+
+<p>Hours later, it happened again.</p>
+
+<h2>The Department of Defense</h2>
+
+<p>The next wave came from <code>33.44.22.33</code> &mdash; an IP address belonging to <b>ASN 749, United States Department of Defense</b>. The <code>33.0.0.0/8</code> block has been allocated to the DoD since January 1970.</p>
+
+<img class="screenshot" src="asjo-dod.png" alt="DNS honeypot logs showing DoD IP 33.44.22.33 flooding ANY queries for asjo.org">
+
+<p>Same query. Same record type. Same domain. <code>ANY</code> for <code>asjo.org</code>, over and over, from a Pentagon IP block.</p>
+
+<p>I dropped that one too. Hours later, the flood resumed from a Comcast residential IP. Then Cox. Then it just kept going.</p>
+
+<h2>It's Not Even a Large Response</h2>
+
+<p>DNS amplification attacks work because a small query produces a large response. The attacker sends a tiny packet, the resolver replies with something much bigger, and the victim gets hammered with the amplified traffic. The <code>ANY</code> record type is the classic choice because it returns everything &mdash; A, AAAA, MX, TXT, NS, SOA, DNSKEY, RRSIG, all of it.</p>
+
+<p>So I ran <code>dig asjo.org ANY</code> myself:</p>
+
+<img class="screenshot" src="asjo-dig-any.png" alt="Output of dig asjo.org ANY showing a 1518 byte response">
+
+<p>The total response is <b>1,518 bytes</b>. That's it. For context, domains commonly abused in amplification attacks return responses of 4,000+ bytes. The amplification factor here is mediocre at best. If you were building a DDoS cannon, you would pick almost any other domain.</p>
+
+<p>As the domain owner himself put it on his blog:</p>
+
+<blockquote>"For looking up asjo.org, for crying out loud: the zone is 36 lines long"</blockquote>
+
+<p>36 lines. The entire zone file. This is a personal domain with a handful of records, not a juicy amplification target.</p>
+
+<h2>Not a Normal DDoS</h2>
+
+<p>At first glance this looks like a textbook DNS reflection attack. But the more I looked at it, the less it made sense:</p>
+
+<ul>
+	<li><b>Duration</b> &mdash; This has been going on for over <b>two years</b>. Reflected DDoS attacks are typically short bursts, not multi-year campaigns.</li>
+	<li><b>Source diversity</b> &mdash; The queries come from residential ISPs (Comcast, Cox, Verizon, Sky UK, Orange France), cloud providers (DigitalOcean, Amazon), telecom carriers (AT&amp;T, HKT, HiNet, TransTeleCom), hosting companies, and <i>the United States Department of Defense</i>.</li>
+	<li><b>Single target domain</b> &mdash; Always <code>asjo.org</code>. Always <code>ANY</code>. Never anything else.</li>
+	<li><b>Legacy address space</b> &mdash; The DoD <code>33.0.0.0/8</code> block is legacy space from the earliest days of the internet. Spoofing it in a reflection attack would send the amplified responses to the DoD, not a useful DDoS target.</li>
+	<li><b>Poor amplification</b> &mdash; A 1,518 byte response is a terrible choice for amplification when domains returning 4x that size are freely available.</li>
+</ul>
+
+<p>If this were a reflection attack, the attacker would be DDoSing... the Pentagon? For two years? With DNS <code>ANY</code> queries for a Danish man's personal domain that returns 1.5 KB? It doesn't add up.</p>
+
+<h2>The Domain Owner Knows</h2>
+
+<p><code>asjo.org</code> belongs to Adam Sj&oslash;gren, a Danish developer who runs his own infrastructure. The domain hosts a personal site with some photographs, a music collection, a few links, and pictures of bread. That's it. This is the domain at the center of all of this:</p>
+
+<img class="blog-screenshot" src="asjo.png" alt="asjo.org - a personal website with sculptures, bread photos, and links">
+
+<p>He has been documenting this exact phenomenon on his blog since March 2024 &mdash; four separate posts chronicling the same pattern I was seeing on my honeypots, two years before I ever set them up.</p>
+
+<p><b>March 2024</b> &mdash; <a href="https://koldfront.dk/under_attack_1870">"Under attack?!"</a>: His home router started dropping 40-80% of packets. <code>named</code> was pegged at 100% CPU. A single IP in China was sending thousands of <code>ANY</code> requests for his own domain. His VPS hoster warned him about the traffic spike. When he blocked the IP, another one immediately took its place.</p>
+
+<img class="blog-screenshot" src="asjo-blog-1.png" alt="koldfront.dk - Under attack?! blog post showing smokeping graphs and bandwidth spikes">
+
+<p><b>May 2024</b> &mdash; <a href="https://koldfront.dk/dns_dos_again_1877">"DNS DoS again"</a>: Same thing, different IP, again from China. His jukebox kept rebooting because it couldn't ping the router. 998 out of 1000 packets on his network were <code>ANY</code> queries for <code>asjo.org</code>. He had to reboot the router just to access the firewall interface.</p>
+
+<img class="blog-screenshot" src="asjo-blog-2.png" alt="koldfront.dk - DNS DoS again blog post showing network traffic graphs and iptables drops">
+
+<p><b>June 2024</b> &mdash; <a href="https://koldfront.dk/another_dos_1880">"Another DoS"</a>: Hit again. Router latency spiked, CPU maxed, VPS transfer quotas blown. Same pattern. He still had no idea what it was about.</p>
+
+<img class="blog-screenshot" src="asjo-blog-3.png" alt="koldfront.dk - Another DoS blog post showing router and network impact graphs">
+
+<p><b>October 2024</b> &mdash; <a href="https://koldfront.dk/stupid_dns_dos_again_1903">"Stupid DNS DoS again"</a>: He gave up. After months of blocking /8 networks and still getting hit with thousands of packets per second, he moved DNS for <code>asjo.org</code> to his registrar dom&aelig;ne.shop. A man who believes in self-hosting, forced off his own nameservers by a mystery flood that nobody can explain.</p>
+
+<img class="blog-screenshot" src="asjo-blog-4.png" alt="koldfront.dk - Stupid DNS DoS again blog post, showing zone is only 36 lines">
+
+<p>He wrote: <i>"I really like hosting things myself. I think it healthy for me and the internet in general that people do so &mdash; instead of having megacorps silo everything."</i> But the flood won.</p>
+
+<h2>I Emailed Him</h2>
+
+<p>I reached out to Adam directly. Here is his reply:</p>
+
+<div class="email">Hi,
+
+acidvegas writes:
+
+&gt; I am currently running a dns honeypot network right now logging all
+&gt; queries and your domain "asjo.org" has showed up 46 million times in
+&gt; the last 24 hours for a "ANY" request.
+
+Yikes!
+
+&gt; What's odd is I did the same as you, started dropping the IP's but
+&gt; new ones showed up.
+
+Yes, I ended up not hosting DNS for asjo.org myself anymore, I moved
+handling of DNS for that domain to my registrar, who is better at
+handling this than I was. My tiny VPS's were running out of transfer
+per month(!)
+
+I wrote about it a couple of times on my blog:
+
+ &middot; https://koldfront.dk/under_attack_1870
+ &middot; https://koldfront.dk/dns_dos_again_1877
+ &middot; https://koldfront.dk/another_dos_1880
+ &middot; https://koldfront.dk/stupid_dns_dos_again_1903
+
+&gt; What I found interesting is some of the IP addresses making 10,'s of
+&gt; thousands of ANY requests for your domain, were from like Saudi
+&gt; Telecom, the United States Department of Defense, etc.
+
+It is very odd indeed.
+
+&gt; If you have any insight into why people seem to be (i can only assume
+&gt; spoofing) your domain so much, I would love to chat with you.
+
+I have no idea what so ever, so if you find something out, I would
+love to hear about it!
+
+One thing I did notice lately is that my employer (by way of
+Microsoft, I assume) has blocked asjo.org:
+
+ &middot; https://koldfront.dk/blocked_by_it_1964
+
+<span class="sig">  Best regards,
+
+    Adam
+
+-- 
+ "This whole business of Santa rewarding good kids          Adam Sjøgren
+  and neglecting bad kids really bugs me."             asjo@koldfront.dk</span></div>
+
+<p>He has no idea either. But that last link he sent led me to something else.</p>
+
+<h2>Collateral Damage</h2>
+
+<p>In January 2026, Adam discovered that his employer's network &mdash; via Microsoft Defender SmartScreen &mdash; had <a href="https://koldfront.dk/blocked_by_it_1964">blocked asjo.org entirely</a>.</p>
+
+<img class="blog-screenshot" src="asjo-blog-blocked.png" alt="koldfront.dk - Blocked by IT blog post showing Microsoft Defender blocking asjo.org">
+
+<p>His personal domain, which contains a photo collection, a music list, and a few links, is now flagged as dangerous by Microsoft's threat intelligence. He also noted that people in Asia have been using <code>asjo.org</code> as a spoofed From address when sending spam. The DNS flood, the spam spoofing, the reputation damage &mdash; this one man's personal domain has become collateral in something he has no control over and no understanding of.</p>
+
+<p>As he put it: <i>"But great for my bad boy reputation at work, I'm the one with the blocked domain!"</i></p>
+
+<h2>Ranked #646 in the World</h2>
+
+<p>Akamai publishes a <a href="https://www.akamai.com/internet-station/cyber-attacks/attack-tools/akamai-dns-traffic">ranking of the top 10,000 domains</a> by DNS query volume. I pulled the CSV and searched for <code>asjo.org</code>.</p>
+
+<img class="screenshot" src="asjo-akamai.png" alt="Akamai top 10K domains CSV showing asjo.org ranked #646">
+
+<p><code>asjo.org</code> is <b>ranked #646 globally</b>. Sitting between <code>truste.com</code> and <code>google.us</code>. A one-person Danish blog, ranked higher than <code>microsoft.us</code>, <code>iqm.com</code>, and thousands of actual businesses. That is not organic traffic. Something is generating an astronomical volume of DNS queries for this domain across the global internet.</p>
+
+<p>This raises an interesting thought experiment: can you <i>spoof your way</i> into the top 1 million domains? Cloudflare, Akamai, and others publish these popularity rankings based on DNS query volume. If sheer volume of spoofed queries is enough to land a personal blog at #646 globally, what stops anyone from artificially inflating any domain into these lists? These rankings are used by security tools, threat feeds, and allowlists everywhere. We may have to put this to the test. &#128520;</p>
+
+<h2>Dataplane.org Sees It Too</h2>
+
+<p><a href="https://dataplane.org">Dataplane.org</a> operates a network of sensors that observe unsolicited DNS queries &mdash; essentially the same thing my honeypot does, but at larger scale and run by operators for operators. They publish a <a href="https://dataplane.org/signals/dnstypename.txt">report of type/name pairs</a> observed from unsolicited DNS query attempts.</p>
+
+<p><code>asjo.org</code> appears in their current report:</p>
+
+<pre>dnstypename  |  ANY               |  asjo.org</pre>
+
+<p>This is independent, third-party confirmation. Dataplane's sensors, my honeypot cluster, my colleague's nameserver, and Adam's own infrastructure &mdash; all observing the same phenomenon, completely independently.</p>
+
+<h2>Corroboration</h2>
+
+<p>A colleague who operates his own independent nameserver grepped his logs after I mentioned this. He found <b>17 unique source IPs</b> responsible for <b>1.4 million queries</b> for <code>ANY asjo.org</code> on his server alone. These are the IPs, resolved via <a href="https://bgp.tools">bgp.tools</a>:</p>
+
+<div class="table-wrap">
+<table class="ips">
+	<tr><th>ASN</th><th>IP</th><th>Prefix</th><th>CC</th><th>Organization</th></tr>
+	<tr><td>14061</td><td>134.199.134.80</td><td>134.199.132.0/22</td><td>US</td><td>DigitalOcean LLC</td></tr>
+	<tr><td>152194</td><td>143.92.63.185</td><td>143.92.63.0/24</td><td>HK</td><td>CTG Server Limited</td></tr>
+	<tr><td>7018</td><td>162.237.225.67</td><td>162.224.0.0/12</td><td>US</td><td>AT&amp;T Enterprises, LLC</td></tr>
+	<tr><td>16509</td><td>16.24.10.160</td><td>16.24.0.0/16</td><td>US</td><td>Amazon.com, Inc.</td></tr>
+	<tr><td>35819</td><td>178.73.75.196</td><td>178.73.72.0/22</td><td>SA</td><td>Etihad Etisalat</td></tr>
+	<tr><td>22773</td><td>184.187.48.149</td><td>184.187.48.0/20</td><td>US</td><td>Cox Communications Inc.</td></tr>
+	<tr><td>4760</td><td>220.246.52.55</td><td>220.246.32.0/19</td><td>HK</td><td>HKT Limited</td></tr>
+	<tr><td>749</td><td>33.44.22.33</td><td>33.0.0.0/8</td><td>US</td><td>US Department of Defense</td></tr>
+	<tr><td>215370</td><td>45.154.34.95</td><td>45.154.34.0/24</td><td>NL</td><td>Wasabi Hosting</td></tr>
+	<tr><td>5650</td><td>47.158.35.9</td><td>47.158.0.0/16</td><td>US</td><td>Verizon (fka. Frontier)</td></tr>
+	<tr><td>12849</td><td>5.29.14.10</td><td>5.29.14.0/24</td><td>IL</td><td>Hot-Net internet services</td></tr>
+	<tr><td>214320</td><td>5.83.140.209</td><td>5.83.140.0/24</td><td>NL</td><td>Sergei Saliukov</td></tr>
+	<tr><td>3462</td><td>60.251.162.117</td><td>60.251.162.0/24</td><td>TW</td><td>HiNet (Chunghwa Telecom)</td></tr>
+	<tr><td>7725</td><td>68.62.141.174</td><td>68.62.128.0/19</td><td>US</td><td>Comcast Cable</td></tr>
+	<tr><td>33287</td><td>76.124.213.36</td><td>76.124.212.0/22</td><td>US</td><td>Comcast Cable</td></tr>
+	<tr><td>20485</td><td>83.234.173.58</td><td>83.234.0.0/16</td><td>RU</td><td>TransTeleCom JSC</td></tr>
+	<tr><td>5607</td><td>90.205.213.241</td><td>90.192.0.0/11</td><td>GB</td><td>Sky UK</td></tr>
+	<tr><td>3215</td><td>90.76.50.172</td><td>90.76.0.0/16</td><td>FR</td><td>Orange S.A.</td></tr>
+	<tr><td>213537</td><td>92.242.165.242</td><td>92.242.165.0/24</td><td>TR</td><td>Inception Game &amp; Media Services</td></tr>
+	<tr><td>22773</td><td>98.164.156.111</td><td>98.164.152.0/21</td><td>US</td><td>Cox Communications Inc.</td></tr>
+</table>
+</div>
+
+<p>Look at the diversity. US military. European residential ISPs. Asian telecom carriers. Middle Eastern mobile operators. Russian transit providers. Israeli broadband. Turkish gaming companies. Cloud providers. Small Dutch hosting shops. This is not a single botnet. This is not a single attacker. This is something distributed across the global internet at a scale that is difficult to explain.</p>
+
+<h2>What We Know</h2>
+
+<p>I don't have a clean answer for what is happening here. Nobody does &mdash; not me, not Adam, not my colleague, not the Dataplane.org operators. But here is what the evidence shows:</p>
+
+<ul>
+	<li>DNS <code>ANY</code> queries for <code>asjo.org</code> are being sent to nameservers across the internet at massive scale &mdash; enough to rank the domain <b>#646 globally</b> in Akamai's DNS rankings.</li>
+	<li>This has been happening for at least <b>two years</b>, documented independently by multiple observers across multiple continents.</li>
+	<li>The source IPs span residential ISPs, cloud providers, DoD legacy address space, and international carriers across at least <b>12 countries</b>.</li>
+	<li>The target domain's zone file is <b>36 lines long</b> and its <code>ANY</code> response is <b>1,518 bytes</b> &mdash; a poor choice for DNS amplification.</li>
+	<li>The pattern does not fit a typical DNS amplification DDoS &mdash; the duration is too long, the source diversity is too broad, the amplification factor is too low, and the use of DoD legacy address space makes no tactical sense for reflection.</li>
+	<li>Blocking individual IPs causes immediate rotation to new sources, suggesting coordination or automation.</li>
+	<li>The phenomenon is confirmed by <a href="https://dataplane.org/signals/dnstypename.txt">Dataplane.org</a>'s independent sensor network.</li>
+	<li>The collateral damage is real &mdash; Adam was forced off his own nameservers and his domain is now blocked by Microsoft Defender.</li>
+</ul>
+
+<p>Some possibilities:</p>
+
+<ul>
+	<li><b>Massively distributed botnet</b> &mdash; A botnet with nodes across residential, enterprise, and government networks, all hardcoded to send <code>ANY</code> queries for a single domain. But why <code>asjo.org</code>? And why for two years? And why would a botnet operator burn resources on a 36-line zone?</li>
+	<li><b>Misconfigured software</b> &mdash; Some widely deployed application or appliance with a hardcoded or default DNS health check target of <code>asjo.org</code>. A monitoring probe gone wrong at planetary scale. This would explain the residential ISP diversity &mdash; consumer routers, IoT devices, or embedded systems phoning home with the wrong query.</li>
+	<li><b>Research or measurement</b> &mdash; An academic or government project studying DNS resolver behavior using <code>asjo.org</code> as a canary domain. The DoD involvement could support this, though the volume and collateral damage argue against any responsible research program.</li>
+	<li><b>A grudge that outlived its owner</b> &mdash; My personal favorite theory. Someone Adam pissed off at some point rooted a box, wrote a spoofing script to flood DNS queries for his domain, and let it rip. Then they lost access to the box. But the script never stopped. It's still running, years later, on some forgotten compromised machine &mdash; an automated vendetta in limbo, spoofing <code>asjo.org</code> into the void long after whoever started it moved on or forgot it existed.</li>
+	<li><b>Something else entirely</b> &mdash; The internet is weird. Sometimes the answer is boring. Sometimes it never comes. And sometimes a Danish man's personal blog ends up ranked between <code>truste.com</code> and <code>google.us</code> and nobody knows why.</li>
+</ul>
+
+<p>If you run a nameserver, grep your logs for <code>asjo.org</code>. I'd bet money you'll find it.</p>
+
+<p>As of this writing, the queries are still coming in. We are actively monitoring this across our honeypot cluster and the flood has not stopped:</p>
+
+<img class="screenshot" src="asjo-monitoring.png" alt="Live honeypot monitoring showing continued ANY queries for asjo.org from ReliableSite.Net">
+
+<p>Every few seconds, another <code>ANY</code> query for <code>asjo.org</code>. Still going. Still unexplained.</p>
+
+<div class="separator">- - -</div>
+
+<p><b>Sources &amp; References:</b></p>
+<ul>
+	<li><a href="https://koldfront.dk/under_attack_1870">Under attack?!</a> &mdash; koldfront.dk, March 2024</li>
+	<li><a href="https://koldfront.dk/dns_dos_again_1877">DNS DoS again</a> &mdash; koldfront.dk, May 2024</li>
+	<li><a href="https://koldfront.dk/another_dos_1880">Another DoS</a> &mdash; koldfront.dk, June 2024</li>
+	<li><a href="https://koldfront.dk/stupid_dns_dos_again_1903">Stupid DNS DoS again</a> &mdash; koldfront.dk, October 2024</li>
+	<li><a href="https://koldfront.dk/blocked_by_it_1964">Blocked by IT</a> &mdash; koldfront.dk, January 2026</li>
+	<li><a href="https://dataplane.org/signals/dnstypename.txt">DNS Type/Name Report</a> &mdash; Dataplane.org</li>
+	<li><a href="https://www.akamai.com/internet-station/cyber-attacks/attack-tools/akamai-dns-traffic">Akamai DNS Traffic Rankings</a></li>
+	<li><a href="https://bgp.tools">BGP.tools</a> &mdash; IP/ASN lookups</li>
+</ul>
+
+<p><i>If you run a nameserver and have logs showing queries for <code>asjo.org</code>, I would love to compare notes. Any intel on this mystery is welcome &mdash; reach out at <a href="mailto:acid.vegas@acid.vegas">acid.vegas@acid.vegas</a> or join us on IRC at <a href="ircs://irc.supernets.org/#war">irc.supernets.org</a> in <b>#war</b>, our recon, hacking, and threat intelligence channel.</i></p>
+
+<div class="tags">
+	<a href="#">#dns</a>
+	<a href="#">#spoofing</a>
+	<a href="#">#ddos</a>
+	<a href="#">#scanning</a>
+</div>
+
+<br><br>
+</center>

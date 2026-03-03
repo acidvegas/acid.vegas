@@ -1,0 +1,14 @@
+a{color:#8dc}
+a:hover{color:#8cd}
+html{overflow-x:hidden;}
+body{background-color:#111;color:#fff;font-family:monospace;margin:0;padding:0 15px;box-sizing:border-box;}
+img{max-width:100%;height:auto;}
+table{max-width:100%;}
+center{padding:0 5px;}
+#nav td{padding:0 2px;}
+#nav img{max-width:100%;height:auto;}
+@media(max-width:600px){
+	body{padding:0 10px;}
+	#nav td{padding:0 1px;}
+	#nav img{max-height:28px;width:auto;}
+}
