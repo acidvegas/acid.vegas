@@ -250,7 +250,27 @@ Microsoft, I assume) has blocked asjo.org:
 
 <img class="screenshot" src="asjo-akamai.png" alt="Akamai top 10K domains CSV showing asjo.org ranked #646">
 
-<p><code>asjo.org</code> is <b>ranked #646 globally</b>. Sitting between <code>truste.com</code> and <code>google.us</code>. A one-person Danish blog, ranked higher than <code>microsoft.us</code>, <code>iqm.com</code>, and thousands of actual businesses. That is not organic traffic. Something is generating an astronomical volume of DNS queries for this domain across the global internet.</p>
+<p><code>asjo.org</code> is <b>ranked #652 globally</b>. Let that sink in. To put this in perspective, here are some of the domains it outranks:</p>
+
+<pre>asjo.org            #652
+x.com               #671
+telegram.org        #689
+ebay.com            #719
+intel.com           #727
+huawei.com          #742
+hotmail.com         #760
+discord.com         #778
+uber.com            #836
+dropbox.com         #838
+amazon.co.uk        #893
+python.org          #906
+booking.com         #928
+duckduckgo.com      #962
+slack.com           #966
+nvidia.com          #968
+oracle.com          #973</pre>
+
+<p>A one-person Danish blog about bread and photographs is generating more DNS query volume than <b>X (Twitter)</b>, <b>Telegram</b>, <b>eBay</b>, <b>Discord</b>, <b>Uber</b>, <b>Dropbox</b>, <b>Slack</b>, <b>Nvidia</b>, and <b>Oracle</b>. That is not organic traffic. The sheer volume required to outrank these platforms &mdash; some of the most visited sites on the internet &mdash; is staggering. Something is generating an astronomical number of DNS queries for this domain across the global internet.</p>
 
 <p>This raises an interesting thought experiment: can you <i>spoof your way</i> into the top 1 million domains? Cloudflare, Akamai, and others publish these popularity rankings based on DNS query volume. If sheer volume of spoofed queries is enough to land a personal blog at #646 globally, what stops anyone from artificially inflating any domain into these lists? These rankings are used by security tools, threat feeds, and allowlists everywhere. We may have to put this to the test. &#128520;</p>
 
@@ -344,6 +364,10 @@ Microsoft, I assume) has blocked asjo.org:
 </ul>
 
 <p><i>If you run a nameserver and have logs showing queries for <code>asjo.org</code>, I would love to compare notes. Any intel on this mystery is welcome &mdash; reach out at <a href="mailto:acid.vegas@acid.vegas">acid.vegas@acid.vegas</a> or join us on IRC at <a href="ircs://irc.supernets.org/#war">irc.supernets.org</a> in <b>#war</b>, our recon, hacking, and threat intelligence channel.</i></p>
+
+<div class="separator">- - -</div>
+
+<p><b>Update &mdash; 2026-03-03:</b> Since publishing this article, a network operator responsible for one of the source IP ASNs listed in the corroboration table reached out to confirm that the traffic is not legitimate. The queries for <code>asjo.org</code> originating from their address space are not coming from their infrastructure &mdash; the source IPs are being spoofed. We suspected this from the beginning given the source diversity and the presence of DoD legacy space, but this is the first direct confirmation from an operator on the other end. The IPs sending these queries are forged.</p>
 
 <div class="tags">
 	<a href="#">#dns</a>
