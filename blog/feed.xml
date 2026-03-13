@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
 <channel>
 	<title>acidvegas x blog</title>
 	<link>https://acid.vegas/blog/</link>
@@ -23,6 +23,7 @@
 		<link>https://acid.vegas/blog/the-mystery-of-asjo-org/</link>
 		<guid>https://acid.vegas/blog/the-mystery-of-asjo-org/</guid>
 		<pubDate>Sun, 01 Mar 2026 00:00:00 +0000</pubDate>
+		<dc:modified>Tue, 03 Mar 2026 00:00:00 +0000</dc:modified>
 		<description>46 million DNS ANY queries for a Danish man's personal domain, from DoD address space, residential ISPs, and cloud providers across 12 countries. A two-year mystery nobody can explain.</description>
 		<category>dns</category>
 		<category>spoofing</category>
